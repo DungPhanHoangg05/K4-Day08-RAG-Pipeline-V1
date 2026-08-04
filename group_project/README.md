@@ -79,10 +79,11 @@ Xem code mẫu (DeepEval/RAGAS/TruLens) chi tiết trong `README.md` gốc mục
 
 | Thành viên | MSSV | Nhiệm vụ | Trạng thái |
 |-----------|------|----------|------------|
-| | | | |
-| | | | |
-| | | | |
-| | | | |
+| Phan Hoàng Dũng | 2A202601348 | Role 1 (Team Leader & RAG Architect) | |
+| Tòng Văn Tiến | 2A202601996 | Role 2 (Data & Dense Search Dev) | |
+| Ngô Nguyễn Khải Hưng | 2A202601216 | Role 3 (Sparse & Rerank Dev) | |
+| Mai Tiến Mạnh | 2A202601922 | Role 4 (Frontend & Chatbot Dev) | |
+| Phạm Duy Hoàn | 2A202601378 | Role 5 (Evaluation & QA Engineer) | |
 
 ---
 
