@@ -1,5 +1,5 @@
 """
-RAG Chatbot — E-commerce Support (Starter Template)
+RAG Chatbot — Concert & Festival Music Guide (Nhạc hội & Sự kiện âm nhạc)
 Streamlit app kết nối RAG Retrieval (Task 9) và Generation (Task 10).
 
 Chạy:
@@ -24,8 +24,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 # =============================================================================
 
 st.set_page_config(
-    page_title="E-commerce Support RAG Chatbot",
-    page_icon="🛒",
+    page_title="Concert & Festival Guide",
+    page_icon="🎶",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -35,18 +35,18 @@ st.set_page_config(
 # =============================================================================
 
 with st.sidebar:
-    st.title("🛒 E-commerce Support RAG")
-    st.caption("Trợ lý hỏi đáp về chính sách thương mại điện tử và hỗ trợ khách hàng (đổi trả, thanh toán, bảo mật, người bán)")
+    st.title("🎶 Concert & Festival Guide")
+    st.caption("Trợ lý hỏi đáp về nhạc hội, concert và festival (lịch trình, săn vé, đồ dùng cần chuẩn bị, nội quy sự kiện)")
 
     st.divider()
 
     st.subheader("💡 Câu hỏi gợi ý")
     suggestions = [
-        "Thời hạn yêu cầu trả hàng/hoàn tiền là bao lâu?",
-        "Shopee hỗ trợ những phương thức thanh toán nào?",
-        "Làm sao để đổi phương thức thanh toán đơn hàng?",
-        "Quy định về đăng bán sản phẩm cho người bán?",
-        "Cách mua hàng trên Shopee của quốc gia khác?",
+        "Danh mục vật dụng bị cấm mang vào khu vực SVĐ khi đi xem concert?",
+        "Kinh nghiệm săn vé Fanzone và chuẩn bị thể lực cho festival ngoài trời?",
+        "Giờ check-in và sơ đồ stage của đêm nhạc Anh Trai Vượt Ngàn Chông Gai?",
+        "Cách đặt vé concert quốc tế và các phương thức thanh toán phổ biến?",
+        "Những đồ dùng nên mang theo khi đi festival âm nhạc cả ngày?",
     ]
     for s in suggestions:
         if st.button(s, use_container_width=True, key=f"sug_{s[:20]}"):
@@ -73,8 +73,8 @@ if "pending_query" not in st.session_state:
 # MAIN CHAT AREA
 # =============================================================================
 
-st.title("🛒 E-commerce Support RAG Chatbot")
-st.caption("Hệ thống hỏi đáp chính sách e-commerce và trợ giúp khách hàng")
+st.title("🎶 Concert & Festival Guide Chatbot")
+st.caption("Hệ thống hỏi đáp về nhạc hội, concert và festival — săn vé, lịch trình, nội quy sự kiện")
 
 # Hiển thị lịch sử chat
 for msg in st.session_state.messages:
@@ -95,7 +95,7 @@ for msg in st.session_state.messages:
 # QUERY HANDLING
 # =============================================================================
 
-user_input = st.chat_input("Nhập câu hỏi của bạn về chính sách/hỗ trợ e-commerce...")
+user_input = st.chat_input("Nhập câu hỏi của bạn về concert/festival/sự kiện âm nhạc...")
 query = user_input or st.session_state.pending_query
 
 if query:
