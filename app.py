@@ -13,11 +13,13 @@ from pathlib import Path
 import streamlit as st
 from dotenv import load_dotenv
 
-load_dotenv()
-
 # Thêm project root vào sys.path để import các task từ src/
 PROJECT_ROOT = Path(__file__).parent
 sys.path.insert(0, str(PROJECT_ROOT))
+
+# Dùng đường dẫn tuyệt đối để load_dotenv() luôn tìm đúng file .env
+# bất kể Streamlit được chạy từ thư mục nào
+load_dotenv(dotenv_path=PROJECT_ROOT / ".env", override=True)
 
 # =============================================================================
 # PAGE CONFIG

@@ -14,9 +14,12 @@ Base URL: "https://openrouter.ai/api/v1", dùng chung interface với OpenAI SDK
 """
 
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()
+# Dùng đường dẫn tuyệt đối để load_dotenv() luôn tìm đúng .env
+# bất kể module được import từ đâu (Streamlit, pytest, script...)
+load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env", override=True)
 
 from .task9_retrieval_pipeline import retrieve
 
@@ -38,7 +41,7 @@ TOP_P = 0.9
 TEMPERATURE = 0.3
 
 # TODO: Chọn LLM model (OpenRouter model ID)
-LLM_MODEL = "openai/gpt-4o-mini"  # hoặc model ":free" nếu chưa có credit
+LLM_MODEL = "google/gemma-2-9b-it:free"
 
 
 # =============================================================================
@@ -198,7 +201,7 @@ def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
             import google.generativeai as genai
             genai.configure(api_key=gemini_key)
             model = genai.GenerativeModel(
-                model_name="gemini-1.5-flash",
+                model_name="gemini-3.1-flash-lite",
                 system_instruction=SYSTEM_PROMPT,
             )
             response = model.generate_content(
