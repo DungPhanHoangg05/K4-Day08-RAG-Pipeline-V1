@@ -40,7 +40,7 @@ CHROMA_DIR = Path(__file__).parent.parent / "chroma_db"
 #     mới đến ký tự, để giữ ngữ nghĩa chunk trọn vẹn nhất có thể.
 CHUNK_SIZE = 500        # 500 ký tự: đủ nhỏ để retrieval chính xác (không lẫn nhiều ý),
                         # đủ lớn để giữ ngữ cảnh cho câu trả lời của RAG.
-CHUNK_OVERLAP = 50      # 50 ký tự (10% chunk_size): tránh cắt đứt ý ở ranh giới chunk,
+CHUNK_OVERLAP = 100      # 50 ký tự (10% chunk_size): tránh cắt đứt ý ở ranh giới chunk,
                         # không quá lớn để tránh trùng lặp dữ liệu index.
 CHUNKING_METHOD = "recursive"  # "recursive" | "markdown_header" | "semantic"
 

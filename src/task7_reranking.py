@@ -14,7 +14,24 @@ bất kể nội dung đó có thật sự liên quan đến câu hỏi hay khô
 quyết định fallback ở Task 9 — xem ghi chú ở đó.
 """
 
+import math
+import re
 from typing import Optional
+
+
+def _tokenize(text: str) -> list[str]:
+    """Tách token đơn giản cho overlap heuristic trong rerank fallback."""
+    return re.findall(r"\w+", text.lower())
+
+
+def _lexical_overlap(query: str, content: str) -> float:
+    """Trả về score overlap [0,1] dựa trên token giao nhau."""
+    q_tokens = set(_tokenize(query))
+    c_tokens = set(_tokenize(content))
+    if not q_tokens:
+        return 0.0
+    overlap = len(q_tokens & c_tokens)
+    return overlap / len(q_tokens)
 
 
 def rerank_cross_encoder(
@@ -54,7 +71,19 @@ def rerank_cross_encoder(
     # Option B: Local model (Qwen3-Reranker)
     # from transformers import AutoModelForSequenceClassification, AutoTokenizer
     # ...
-    raise NotImplementedError("Implement rerank_cross_encoder")
+    # Fallback heuristic: blend original retrieval score với lexical overlap để
+    # có một rerank stable khi API/cross-encoder model chưa tích hợp.
+    reranked: list[dict] = []
+    for candidate in candidates:
+        base_score = float(candidate.get("score", 0.0))
+        overlap = _lexical_overlap(query, candidate.get("content", ""))
+        rerank_score = 0.7 * base_score + 0.3 * overlap
+        item = candidate.copy()
+        item["score"] = round(rerank_score, 4)
+        reranked.append(item)
+
+    reranked.sort(key=lambda x: x["score"], reverse=True)
+    return reranked[:top_k]
 
 
 def rerank_mmr(
@@ -77,37 +106,55 @@ def rerank_mmr(
     Returns:
         List of top_k candidates selected by MMR.
     """
-    # TODO: Implement MMR
-    #
-    # selected = []
-    # remaining = list(range(len(candidates)))
-    #
-    # for _ in range(min(top_k, len(candidates))):
-    #     best_idx = None
-    #     best_score = float('-inf')
-    #
-    #     for idx in remaining:
-    #         # Relevance to query
-    #         relevance = cosine_sim(query_embedding, candidates[idx]["embedding"])
-    #
-    #         # Max similarity to already selected
-    #         max_sim_to_selected = 0
-    #         for sel_idx in selected:
-    #             sim = cosine_sim(candidates[idx]["embedding"], candidates[sel_idx]["embedding"])
-    #             max_sim_to_selected = max(max_sim_to_selected, sim)
-    #
-    #         # MMR score
-    #         mmr_score = lambda_param * relevance - (1 - lambda_param) * max_sim_to_selected
-    #
-    #         if mmr_score > best_score:
-    #             best_score = mmr_score
-    #             best_idx = idx
-    #
-    #     selected.append(best_idx)
-    #     remaining.remove(best_idx)
-    #
-    # return [candidates[i] for i in selected]
-    raise NotImplementedError("Implement rerank_mmr")
+    # MMR selection: không dựa vào external model, chỉ cần 1 vector query và
+    # embedding của từng candidate.
+    def cosine_sim(a: list[float], b: list[float]) -> float:
+        if len(a) != len(b):
+            return 0.0
+        dot = sum(x * y for x, y in zip(a, b))
+        norm_a = math.sqrt(sum(x * x for x in a))
+        norm_b = math.sqrt(sum(x * x for x in b))
+        if norm_a == 0 or norm_b == 0:
+            return 0.0
+        return dot / (norm_a * norm_b)
+
+    if not candidates:
+        return []
+
+    selected_indexes: list[int] = []
+    remaining = list(range(len(candidates)))
+
+    for _ in range(min(top_k, len(candidates))):
+        best_idx = None
+        best_score = float("-inf")
+
+        for idx in remaining:
+            candidate = candidates[idx]
+            embedding = candidate.get("embedding")
+            if not embedding:
+                relevance = 0.0
+            else:
+                relevance = cosine_sim(query_embedding, embedding)
+
+            max_sim_to_selected = 0.0
+            for sel_idx in selected_indexes:
+                selected_emb = candidates[sel_idx].get("embedding")
+                if selected_emb:
+                    sim = cosine_sim(embedding, selected_emb)
+                    max_sim_to_selected = max(max_sim_to_selected, sim)
+
+            mmr_score = lambda_param * relevance - (1 - lambda_param) * max_sim_to_selected
+            if mmr_score > best_score:
+                best_score = mmr_score
+                best_idx = idx
+
+        if best_idx is None:
+            break
+
+        selected_indexes.append(best_idx)
+        remaining.remove(best_idx)
+
+    return [candidates[i] for i in selected_indexes]
 
 
 def rerank_rrf(
@@ -118,36 +165,56 @@ def rerank_rrf(
 
     RRF(d) = Σ 1 / (k + rank_r(d))
 
+    Cơ chế:
+        - Mỗi ranker (vd: BM25, dense vector search, ...) trả về một danh sách
+          candidates đã được xếp hạng riêng (ranked_list).
+        - Với mỗi candidate, ta lấy vị trí (rank) của nó trong TỪNG danh sách
+          mà nó xuất hiện (rank bắt đầu từ 1, không phải 0).
+        - Điểm RRF của candidate = tổng của 1/(k + rank) trên tất cả các
+          danh sách mà nó có mặt. Candidate không xuất hiện trong 1 ranked_list
+          nào đó thì đơn giản là không cộng thêm gì từ list đó.
+        - k (mặc định 60, theo paper Cormack et al. 2009) là hằng số làm mượt,
+          giúp giảm ảnh hưởng của các rank quá cao (top-1, top-2) và khiến
+          kết quả ổn định hơn khi các ranker có thang điểm/khoảng giá trị khác nhau.
+        - Vì điểm chỉ phụ thuộc vào RANK (thứ hạng) chứ không phụ thuộc vào
+          điểm similarity gốc, RRF phù hợp để fuse kết quả từ các ranker có
+          thang điểm không tương thích nhau (vd: BM25 score vs cosine similarity).
+        - Candidate xuất hiện ở rank cao trong NHIỀU danh sách sẽ có điểm RRF
+          cao hơn candidate chỉ xuất hiện trong 1 danh sách, kể cả khi rank
+          tuyệt đối trong từng list không phải là top-1.
+
     Args:
-        ranked_lists: List of ranked result lists (mỗi list từ 1 ranker)
+        ranked_lists: List of ranked result lists (mỗi list từ 1 ranker).
+            Mỗi phần tử trong mỗi ranked_list là dict có key 'content' dùng
+            làm định danh để gộp (dedupe) candidate trùng nhau giữa các list.
         top_k: Số lượng kết quả cuối cùng
         k: Smoothing constant (default=60, từ paper Cormack et al. 2009)
 
     Returns:
-        List of top_k candidates sorted by RRF score descending.
+        List of top_k candidates sorted by RRF score descending. Mỗi candidate
+        trong kết quả trả về sẽ có field 'score' được ghi đè bằng điểm RRF.
     """
-    # TODO: Implement RRF
-    #
-    # rrf_scores = {}  # content -> score
-    # content_map = {}  # content -> full dict
-    #
-    # for ranked_list in ranked_lists:
-    #     for rank, item in enumerate(ranked_list, 1):
-    #         key = item["content"]
-    #         rrf_scores[key] = rrf_scores.get(key, 0) + 1 / (k + rank)
-    #         content_map[key] = item
-    #
-    # # Sort by RRF score
-    # sorted_items = sorted(rrf_scores.items(), key=lambda x: x[1], reverse=True)
-    #
-    # results = []
-    # for content, score in sorted_items[:top_k]:
-    #     item = content_map[content].copy()
-    #     item["score"] = score
-    #     results.append(item)
-    #
-    # return results
-    raise NotImplementedError("Implement rerank_rrf")
+    rrf_scores: dict[str, float] = {}
+    content_map: dict[str, dict] = {}
+
+    for ranked_list in ranked_lists:
+        for rank, item in enumerate(ranked_list, start=1):
+            key = item["content"]
+            rrf_scores[key] = rrf_scores.get(key, 0.0) + 1.0 / (k + rank)
+            # Giữ lại bản ghi đầu tiên gặp được cho mỗi content (metadata giống nhau
+            # giữa các ranker vì cùng 1 candidate/document).
+            if key not in content_map:
+                content_map[key] = item
+
+    sorted_items = sorted(rrf_scores.items(), key=lambda x: x[1], reverse=True)
+
+    results = []
+    for content, score in sorted_items[:top_k]:
+        item = content_map[content].copy()
+        item["score"] = score
+        results.append(item)
+
+    return results
 
 
 # =============================================================================
@@ -178,19 +245,29 @@ def rerank(
         # Cần query_embedding - embed query trước
         raise NotImplementedError("Call rerank_mmr with query_embedding")
     elif method == "rrf":
-        # RRF cần nhiều ranked lists - gọi riêng
-        raise NotImplementedError("Call rerank_rrf with ranked_lists")
+        # Hỗ trợ cả 2 dạng input: nhiều ranked list (RRF) hoặc 1 ranked list
+        # để giữ API đơn giản cho test/cli.
+        if candidates and all(isinstance(item, list) for item in candidates):
+            return rerank_rrf(candidates, top_k=top_k)
+        return rerank_cross_encoder(query, candidates, top_k)
     else:
         raise ValueError(f"Unknown rerank method: {method}")
 
 
 if __name__ == "__main__":
-    # Test with dummy data
-    dummy_candidates = [
-        {"content": "Chính sách trả hàng và hoàn tiền Shopee trong 15 ngày", "score": 0.8, "metadata": {}},
-        {"content": "Các phương thức thanh toán hỗ trợ trên Shopee Vietnam", "score": 0.6, "metadata": {}},
-        {"content": "Quy định đăng bán sản phẩm dành cho người bán", "score": 0.5, "metadata": {}},
+    # Test with dummy data: giả lập 2 ranker (vd: BM25 và dense retrieval)
+    # trả về 2 ranked_list khác nhau cho cùng 1 tập tài liệu.
+    bm25_ranked = [
+        {"content": "Chính sách trả hàng và hoàn tiền Shopee trong 15 ngày", "score": 8.2, "metadata": {}},
+        {"content": "Quy định đăng bán sản phẩm dành cho người bán", "score": 6.1, "metadata": {}},
+        {"content": "Các phương thức thanh toán hỗ trợ trên Shopee Vietnam", "score": 4.5, "metadata": {}},
     ]
-    results = rerank("chính sách trả hàng shopee", dummy_candidates, top_k=2)
+    dense_ranked = [
+        {"content": "Chính sách trả hàng và hoàn tiền Shopee trong 15 ngày", "score": 0.91, "metadata": {}},
+        {"content": "Các phương thức thanh toán hỗ trợ trên Shopee Vietnam", "score": 0.77, "metadata": {}},
+        {"content": "Quy định đăng bán sản phẩm dành cho người bán", "score": 0.65, "metadata": {}},
+    ]
+
+    results = rerank_rrf([bm25_ranked, dense_ranked], top_k=3, k=60)
     for r in results:
-        print(f"[{r['score']:.3f}] {r['content']}")
+        print(f"[{r['score']:.5f}] {r['content']}")
