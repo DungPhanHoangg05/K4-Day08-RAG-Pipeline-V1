@@ -48,5 +48,30 @@
     "question": "Khán giả là phụ nữ mang thai hoặc người khuyết tật được mua vé ở khu vực nào trong Concert?",
     "expected_answer": "Phụ nữ mang thai và người khuyết tật chỉ được phép mua vé tại Khu khán đài ngồi để đảm bảo an toàn.",
     "expected_context": "File 1_Dieu_kien_mua_ve.md, mục I. Điều kiện mua vé"
+  },
+  {
+    "question": "Quy định về việc mang banner cổ vũ và các vật phẩm quảng bá thương hiệu vào sự kiện như thế nào?",
+    "expected_answer": "Nghiêm cấm mang banner cổ vũ có kích thước lớn hơn 15cm x 40cm; cấm áp phích mang tính kích động hoặc trái thuần phong mỹ tục; và cấm mang quần áo, mũ nón, vật phẩm chứa logo nhãn hàng để quảng bá thương hiệu.",
+    "expected_context": "File 2_Quy_dinh_tham_gia.md, mục B. Quyền hạn của Ban Tổ Chức & D. Các vật dụng cấm mang vào sự kiện"
+  },
+  {
+    "question": "Một người thân trên 21 tuổi được phép bảo lãnh tối đa bao nhiêu khán giả dưới 18 tuổi và có những trách nhiệm gì?",
+    "expected_answer": "Một người thân được bảo lãnh tối đa 2 người. Người bảo lãnh có trách nhiệm ngăn chặn người được bảo lãnh dùng chất cấm/rượu bia/thuốc lá, bảo vệ quyền lợi hợp pháp và chịu toàn bộ chi phí chăm sóc y tế nếu xảy ra sự cố.",
+    "expected_context": "File 3_Quy_dinh_ve_do_tuoi.md, mục III. Quy định về độ tuổi (Người Tham Dự từ 08 đến dưới 18 tuổi)"
+  },
+  {
+    "question": "Hành vi livestream hoặc quay phim tiết mục biểu diễn bằng thiết bị chuyên nghiệp bị xử lý như thế nào?",
+    "expected_answer": "Nghiêm cấm livestream, quay phim, chụp hình bằng thiết bị chuyên nghiệp dưới mọi hình thức. Người vi phạm sẽ bị yêu cầu ra khỏi khu vực biểu diễn và không được hoàn trả tiền vé.",
+    "expected_context": "File 2_Quy_dinh_tham_gia.md, mục A. Quy định chung khi tham gia"
+  },
+  {
+    "question": "Khán giả có hành vi kích động đám đông hoặc tự ý di chuyển vào khu vực sân khấu cấm sẽ bị xử lý ra sao?",
+    "expected_answer": "Ban Tổ Chức có quyền yêu cầu khán giả vi phạm rời khỏi khu vực biểu diễn hoặc nhờ cơ quan chức năng can thiệp, đồng thời không hoàn trả lại tiền vé.",
+    "expected_context": "File 2_Quy_dinh_tham_gia.md, mục A. Quy định chung khi tham gia"
+  },
+  {
+    "question": "Thời hạn cuối cùng để khán giả gửi các khiếu nại về vé và quyền lợi kèm vé là khi nào?",
+    "expected_answer": "Mọi khiếu nại về vé và quyền lợi phải được thực hiện trước thời điểm đóng cửa Check-in. Ban Tổ Chức không giải quyết bất kỳ khiếu nại nào được đưa ra sau thời điểm này.",
+    "expected_context": "File 2_Quy_dinh_tham_gia.md, mục A. Quy định chung khi tham gia"
   }
 ]
