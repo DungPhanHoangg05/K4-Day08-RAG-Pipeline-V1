@@ -1,0 +1,20 @@
+# Hướng dẫn chi tiết cách săn vé Concert Anh Trai Say Hi và Anh Trai Vượt Ngàn Chông Gai trên Ticketbox
+
+**Source:** https://ticketbox.vn/blog/huong-dan-san-ve-concert-anh-trai-say-hi
+**Crawled:** 2026-08-04T15:30:00.000000
+
+---
+
+# Hướng dẫn chi tiết cách săn vé Concert Anh Trai Say Hi và Anh Trai Vượt Ngàn Chông Gai trên Ticketbox
+
+## 1. Chuẩn bị trước giờ mở bán vé
+Để săn được vé ở vị trí đẹp (Fanzone, SVIP, CAT 1) trong các concert có độ hot lớn:
+- **Tài khoản Ticketbox**: Đăng nhập trước giờ mở bán 30 phút, cập nhật sẵn Họ tên, Số điện thoại, Email và Số CCCD.
+- **Thanh toán sẵn sàng**: Nạp sẵn tiền vào ví điện tử (MoMo/ZaloPay) hoặc liên kết sẵn Thẻ ngân hàng/Thẻ tín dụng để thanh toán tức thì.
+- **Thiết bị và mạng**: Sử dụng mạng internet cáp quang tốc độ cao, nên dùng máy tính thay vì điện thoại để thao tác nhanh hơn.
+
+## 2. Các bước săn vé trong phòng chờ (Queue Room)
+- Bước 1: Vào trang sự kiện trước giờ G khoảng 15-30 phút để nhận số thứ tự trong hàng chờ tự động.
+- Bước 2: **Tuyệt đối không F5 (Reload)** trang web khi đã vào hàng chờ, việc tải lại trang sẽ khiến bạn mất lượt và phải xếp lại từ đầu.
+- Bước 3: Khi đến lượt, chọn nhanh hạng vé (Zone) và số lượng vé cần mua (tối đa 2-4 vé/tài khoản tùy quy định BTC).
+- Bước 4: Hoàn tất thanh toán trong thời hạn 5-10 phút để tránh bị nhả vé về lại hệ thống.
