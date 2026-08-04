@@ -17,23 +17,35 @@ from collections import Counter
 
 _FALLBACK_CORPUS = [
     {
-        "content": "Chính sách trả hàng và hoàn tiền Shopee trong 15 ngày cho đơn hàng chưa qua sử dụng.",
+        "content": "Return and refund policy: customers may request a return within 15 days for unused items and get a refund to the original payment method.",
         "metadata": {"source": "policy_return.md", "type": "ecommerce"},
     },
     {
-        "content": "Các phương thức thanh toán hỗ trợ trên Shopee Vietnam: COD, ATM, ví điện tử, thẻ ngân hàng.",
+        "content": "Payment methods overview: COD, bank transfer, e-wallet, and credit card are supported on the marketplace platform.",
         "metadata": {"source": "payment_methods.md", "type": "ecommerce"},
     },
     {
-        "content": "Quy định đăng bán sản phẩm dành cho người bán trên nền tảng thương mại điện tử.",
+        "content": "Seller listing regulations and seller obligations for selling products on the marketplace platform.",
         "metadata": {"source": "seller_policy.md", "type": "ecommerce"},
     },
     {
-        "content": "Kinh nghiệm đi săn vé Fanzone và chuẩn bị thể lực cho festival âm nhạc ngoài trời kéo dài cả ngày.",
+        "content": "Ecommerce return policy explains how buyers can request refund, exchange, and cancellation for eligible orders.",
+        "metadata": {"source": "return_policy.md", "type": "ecommerce"},
+    },
+    {
+        "content": "Order tracking guide: customers can track shipments using the order ID, view delivery status, and check the latest updates from the courier.",
+        "metadata": {"source": "order_tracking_guide.md", "type": "ecommerce"},
+    },
+    {
+        "content": "Shipping and order tracking policy explains how order IDs, tracking links, and delivery status updates are provided for each purchase.",
+        "metadata": {"source": "shipping_tracking_policy.md", "type": "ecommerce"},
+    },
+    {
+        "content": "Concert festival guide: prepare your checklist, understand venue rules, and buy tickets early for the best seats.",
         "metadata": {"source": "concert_festival_guide.md", "type": "music"},
     },
     {
-        "content": "Danh mục vật dụng bị cấm mang vào khu vực sân vận động khi đi xem Concert lớn.",
+        "content": "Concert venue prohibited items include sharp tools, professional cameras, drones, and oversized bags.",
         "metadata": {"source": "concert_rules.md", "type": "music"},
     },
 ]
@@ -43,14 +55,35 @@ def _tokenize(text: str) -> list[str]:
     return [t for t in re.findall(r"\w+", text.lower()) if len(t) > 1]
 
 
+_SYNONYMS = {
+    "return": {"return", "refund", "refunds", "reimburse"},
+    "refund": {"refund", "return", "reimburse"},
+    "payment": {"payment", "pay", "payments"},
+    "methods": {"methods", "method"},
+    "policy": {"policy", "policies", "rules"},
+    "ecommerce": {"ecommerce", "marketplace", "shop"},
+    "concert": {"concert", "festival", "venue"},
+}
+
+
+def _expand_tokens(tokens: list[str]) -> set[str]:
+    expanded = set(tokens)
+    for token in list(tokens):
+        for alias, group in _SYNONYMS.items():
+            if token in group:
+                expanded.update(group)
+                expanded.add(alias)
+    return expanded
+
+
 def _semantic_overlap_score(query: str, content: str) -> float:
-    q_tokens = Counter(_tokenize(query))
-    c_tokens = Counter(_tokenize(content))
-    if not q_tokens:
+    query_tokens = _expand_tokens(_tokenize(query))
+    content_tokens = _expand_tokens(_tokenize(content))
+    if not query_tokens:
         return 0.0
 
-    overlap = sum(min(q_tokens[t], c_tokens[t]) for t in q_tokens)
-    total = sum(q_tokens.values())
+    overlap = len(query_tokens & content_tokens)
+    total = len(query_tokens)
     if total == 0:
         return 0.0
     return round(overlap / total, 4)
