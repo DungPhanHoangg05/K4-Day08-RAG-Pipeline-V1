@@ -1,17 +1,52 @@
 [
   {
-    "question": "Người mua có thể yêu cầu trả hàng/hoàn tiền trong thời hạn bao lâu sau khi nhận hàng?",
-    "expected_answer": "Trong vòng 15 ngày kể từ khi giao hàng thành công (24 giờ đối với thực phẩm tươi sống/đông lạnh).",
-    "expected_context": "Trang Returns and Refunds Policy, mục Return/Refund Eligibility"
+    "question": "Mỗi tài khoản được mua tối đa bao nhiêu vé Concert Anh Trai Say Hi 2025 và đơn vị phân phối vé chính thức là gì?",
+    "expected_answer": "Mỗi tài khoản được mua tối đa mười (10) vé. Đơn vị phân phối vé độc quyền của sự kiện là Ticketbox (ticketbox.vn).",
+    "expected_context": "File 1_Dieu_kien_mua_ve.md, mục I. Điều kiện mua vé"
   },
   {
-    "question": "Shopee hỗ trợ những phương thức thanh toán nào?",
-    "expected_answer": "ShopeePay Wallet, thẻ tín dụng/ghi nợ, trả góp qua thẻ, QR Code, chuyển khoản qua app ngân hàng, thẻ NAPAS, Apple Pay, Google Pay, và COD.",
-    "expected_context": "Trang Payment Methods Overview"
+    "question": "Quy định về độ tuổi tối thiểu đối với khán giả tham gia khu vực đứng và khu vực khán đài ngồi là bao nhiêu?",
+    "expected_answer": "Khu vực đứng (SUPERFAN, FANZONE, GA) dành cho khán giả từ đủ 14 tuổi. Khu vực khán đài ngồi (SKY LOUNGE, SVIP, VIP, CAT) dành cho khán giả từ đủ 08 tuổi.",
+    "expected_context": "File 3_Quy_dinh_ve_do_tuoi.md, mục III. Quy định về độ tuổi"
   },
   {
-    "question": "Người bán không được đăng bán những sản phẩm nào?",
-    "expected_answer": "Hàng giả/nhái, sản phẩm bất hợp pháp, vi phạm sở hữu trí tuệ, và các mặt hàng nằm trong danh sách cấm của sàn.",
-    "expected_context": "Trang Product Listing Regulations, mục Prohibited Content"
+    "question": "Khán giả từ đủ 08 đến dưới 18 tuổi khi đi xem Concert cần chuẩn bị những thủ tục và điều kiện gì?",
+    "expected_answer": "Cần mang theo giấy tờ tùy thân có năm sinh (CCCD/khai sinh), phải đi cùng người thân trên 21 tuổi (bảo lãnh tối đa 2 người) cùng hạng vé, và điền đầy đủ thông tin vào Đơn Bảo Lãnh trước khi check-in.",
+    "expected_context": "File 3_Quy_dinh_ve_do_tuoi.md, mục III. Quy định về độ tuổi (Người Tham Dự từ 08 đến dưới 18 tuổi)"
+  },
+  {
+    "question": "Thời gian bắt đầu xếp hàng, thời gian check-in chính thức và thời điểm đóng cổng check-in của sự kiện là khi nào?",
+    "expected_answer": "Bắt đầu xếp hàng từ 11:30; Thời gian check-in chính thức từ 12:00 đến 19:00 (chương trình bắt đầu lúc 19:00); Check-in bổ sung từ 19:01 đến 19:59 và chính thức đóng cổng check-in lúc 20:00.",
+    "expected_context": "File 5_Quy_dinh_check_in.md, mục Các mốc thời gian check-in"
+  },
+  {
+    "question": "Vé Concert đã mua có được phép hoàn tiền, đổi trả hoặc chuyển nhượng cho người khác không?",
+    "expected_answer": "Vé đã mua KHÔNG được đổi, trả, nâng cấp, hủy hay hoàn tiền trong bất kỳ trường hợp nào. Không được chuyển nhượng vé ngoài tính năng 'Tặng vé' chính thức trên ứng dụng Ticketbox.",
+    "expected_context": "File 4_Chinh_sach_hoan_doi_ve.md, mục IV. Chính sách đổi, trả, hủy vé"
+  },
+  {
+    "question": "Trong trường hợp sự kiện bị hủy do sự kiện bất khả kháng, quy định hoàn tiền cho khán giả như thế nào?",
+    "expected_answer": "Nếu chương trình bị hủy, Ban Tổ Chức và Ticketbox sẽ thông báo công khai và hoàn trả lại tiền vé cho người mua trong vòng 2 tuần qua chuyển khoản ngân hàng hoặc tiền mặt.",
+    "expected_context": "File 4_Chinh_sach_hoan_doi_ve.md, mục Trường hợp Chương trình bị dời ngày hoặc hủy do sự kiện bất khả kháng"
+  },
+  {
+    "question": "Những thiết bị ghi hình, quay chụp nào bị nghiêm cấm mang vào khu vực biểu diễn Concert?",
+    "expected_answer": "Nghiêm cấm máy tính bảng, iPad, GoPro, ống kính chuyên nghiệp, máy ảnh tháo rời ống kính, gậy selfie, chân máy monopod, và các thiết bị quay chụp/ghi hình/thu âm chuyên nghiệp.",
+    "expected_context": "File 2_Quy_dinh_tham_gia.md, mục D. Các vật dụng cấm mang vào sự kiện"
+  },
+  {
+    "question": "Quy định về kích thước balo/túi xách và thức ăn đồ uống mang vào Concert như thế nào?",
+    "expected_answer": "Cấm balo/túi xách có kích thước lớn hơn 25cm x 35cm x 15cm; cấm mang thức ăn, đồ uống, chai thủy tinh/nhựa cứng và ghế ngồi cá nhân từ bên ngoài vào khuôn viên sự kiện.",
+    "expected_context": "File 2_Quy_dinh_tham_gia.md, mục D. Các vật dụng cấm mang vào sự kiện"
+  },
+  {
+    "question": "Khán giả cần những yếu tố gì để được phép ra/vào lại khu vực biểu diễn trong khi sự kiện diễn ra?",
+    "expected_answer": "Khán giả phải có đầy đủ 3 yếu tố: Mã Vé Điện Tử, Vòng Đeo Tay (còn nguyên vẹn), và Dấu Mộc di chuyển do BTC đóng.",
+    "expected_context": "File 5_Quy_dinh_check_in.md, mục Thủ tục check-in, ra vào cửa"
+  },
+  {
+    "question": "Khán giả là phụ nữ mang thai hoặc người khuyết tật được mua vé ở khu vực nào trong Concert?",
+    "expected_answer": "Phụ nữ mang thai và người khuyết tật chỉ được phép mua vé tại Khu khán đài ngồi để đảm bảo an toàn.",
+    "expected_context": "File 1_Dieu_kien_mua_ve.md, mục I. Điều kiện mua vé"
   }
 ]
