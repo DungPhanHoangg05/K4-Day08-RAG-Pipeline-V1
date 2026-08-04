@@ -1,7 +1,7 @@
 # Kinh nghiệm đi Festival âm nhạc ngoài trời kéo dài cả ngày từ A đến Z
 
 **Source:** https://festivallife.vn/kinh-nghiem-di-festival-am-nhac-ngoai-troi-ca-ngay
-**Crawled:** 2026-08-04T15:30:00.000000
+**Crawled:** 2026-08-04T15:32:08.031706
 
 ---
 

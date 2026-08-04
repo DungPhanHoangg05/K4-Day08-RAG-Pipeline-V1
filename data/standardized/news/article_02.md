@@ -1,7 +1,7 @@
 # Danh mục vật dụng cấm và quy định an ninh khi tham gia Concert âm nhạc tại Sân vận động
 
 **Source:** https://eventguide.vn/danh-muc-vat-dung-cam-mang-vao-concert
-**Crawled:** 2026-08-04T15:30:00.000000
+**Crawled:** 2026-08-04T15:32:06.968223
 
 ---
 

@@ -1,7 +1,7 @@
 # Hướng dẫn chuẩn bị Lightstick, Fanchant và văn hóa đi đu Concert cho thành viên Fandom
 
 **Source:** https://idolguide.vn/huong-dan-chuan-bi-lightstick-va-fanchant-concert
-**Crawled:** 2026-08-04T15:30:00.000000
+**Crawled:** 2026-08-04T15:32:10.248423
 
 ---
 

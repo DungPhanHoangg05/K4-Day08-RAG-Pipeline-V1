@@ -1,7 +1,7 @@
 # Sơ đồ Check-in, quy trình đổi vòng tay và nhập cảnh khu vực Fanzone/GA
 
 **Source:** https://concertvn.com/so-do-check-in-va-quy-trinh-doi-vong-tay-concert
-**Crawled:** 2026-08-04T15:30:00.000000
+**Crawled:** 2026-08-04T15:32:09.199493
 
 ---
 
